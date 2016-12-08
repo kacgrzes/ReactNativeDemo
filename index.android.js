@@ -1,70 +1,64 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
+  Navigator,
   View,
-  Image,
-  Button,
-  Slider,
-  Picker
+  StatusBar
 } from 'react-native';
+import DemoTimer from './DemoTimer';
 
 export default class DemoReactNative extends Component {
-  constructor() {
-    super();
+  getScene(route, navigator) {
+    return (
+      <DemoTimer
+        title={route.title}
+
+        onForward={() => {
+          const nextIndex = route.index + 1;
+          navigator.push({
+            title: 'Scene ' + nextIndex,
+            index: nextIndex,
+          });
+        }}
+
+        onBack={() => {
+          if (route.index > 0) {
+            navigator.pop();
+          }
+        }}
+      />
+    );
   }
+
   render() {
-    let pic = {
-      uri: 'http://andrewbtran.github.io/JRN-418/class6/cat.jpg'
-    };
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Hello world!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-        <Button
-          onPress={() => {}}
-          title="Ok!"
-          color="#841584"
-          accessibilityLabel="Ok, it works!"
+        <StatusBar
+          backgroundColor="#FF6600"
+          barStyle="light-content"
         />
-        <Slider
-          minimumValue={0}
-          maximumValue={50}
-          style={styles.slider}
-          onValueChange={(value) => this.setState({value: value})} />
-        <Image source={pic} style={styles.image}/>
-        <Picker
-          selectedValue={this.state.language}
-          onValueChange={(lang) => this.setState({language: lang})}>
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
+        <Navigator
+          initialRoute={{ title: 'Dashboard' }}
+          renderScene={this.getScene}
+        />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F6F6EF',
+  },
+  toolbar: {
+    height: 56,
+    backgroundColor: '#FF6600'
+  },
+  up: {
+    flex: 1,
+    backgroundColor: 'powderblue'
   },
   welcome: {
     fontSize: 20,
@@ -77,13 +71,20 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   image: {
-    width: 193,
-    height: 130
+    width: 64,
+    height: 50
   },
   slider: {
     height: 30,
     margin: 10,
     width: 200
+  },
+  down: {
+    flex: 2,
+    backgroundColor: 'lightblue',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   }
 });
 
