@@ -4,31 +4,38 @@ import {
   StyleSheet,
   Navigator,
   View,
-  StatusBar
+  StatusBar,
+  BackAndroid
 } from 'react-native';
+
 import DemoTimer from './DemoTimer';
+import DemoGallery from './DemoGallery';
+import ArticlesList from './ArticlesList';
+import ArticleView from './ArticleView';
+
+let _navigator; // we fill this up upon on first navigation.
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator.getCurrentRoutes().length === 1  ) {
+    return false;
+  }
+  _navigator.pop();
+  return true;
+});
 
 export default class DemoReactNative extends Component {
   getScene(route, navigator) {
-    return (
-      <DemoTimer
-        title={route.title}
-
-        onForward={() => {
-          const nextIndex = route.index + 1;
-          navigator.push({
-            title: 'Scene ' + nextIndex,
-            index: nextIndex,
-          });
-        }}
-
-        onBack={() => {
-          if (route.index > 0) {
-            navigator.pop();
-          }
-        }}
-      />
-    );
+    _navigator = navigator;
+    switch (route.id) {
+      case 'timer':
+        return (<DemoTimer navigator={navigator} />);
+      case 'gallery':
+        return (<DemoGallery navigator={navigator} />);
+      case 'articles':
+        return (<ArticlesList navigator={navigator} />);
+      case 'article':
+        return (<ArticleView navigator={navigator} url={route.url}/>);
+    }
   }
 
   render() {
@@ -39,7 +46,8 @@ export default class DemoReactNative extends Component {
           barStyle="light-content"
         />
         <Navigator
-          initialRoute={{ title: 'Dashboard' }}
+          style={styles.container}
+          initialRoute={{id: 'articles'}}
           renderScene={this.getScene}
         />
       </View>
@@ -55,6 +63,10 @@ var styles = StyleSheet.create({
   toolbar: {
     height: 56,
     backgroundColor: '#FF6600'
+  },
+  navigatorBar: {
+    alignItems: 'center',
+    backgroundColor: 'gray',
   },
   up: {
     flex: 1,

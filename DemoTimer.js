@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { View, TouchableHighlight, Text, Slider, StyleSheet } from 'react-native';
 
-class MyScene extends Component {
-  static get defaultProps() {
-    return {
-      title: 'MyScene'
-    };
-  }
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
+class DemoTimer extends Component {
   constructor() {
     super();
     this.state = {
@@ -28,17 +24,25 @@ class MyScene extends Component {
     });
   }
 
+  navSecond(){
+    this.props.navigator.push({
+      id: 'gallery'
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Current Scene: {this.props.title}</Text>
-
-        <TouchableHighlight onPress={this.props.onForward}>
-          <Text>Tap me to load the next scene</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight onPress={this.props.onBack}>
-          <Text>Tap me to go back</Text>
+        <Icon.ToolbarAndroid
+          title="Timer"
+          titleColor="white"
+          style={styles.toolbar}
+        />
+        <Text>Current Scene: {this.props.id}</Text>
+        <TouchableHighlight onPress={this.navSecond.bind(this)}>
+          <Text>
+            Navigate to gallery
+          </Text>
         </TouchableHighlight>
         <View style={styles.up}>
           <Text style={styles.welcome}>
@@ -56,18 +60,20 @@ class MyScene extends Component {
   }
 }
 
-MyScene.propTypes = {
-  title: PropTypes.string.isRequired,
-  onForward: PropTypes.func.isRequired,
-  onBack: PropTypes.func.isRequired,
+DemoTimer.propTypes = {
+  id: PropTypes.string,
+  onForward: PropTypes.func,
+  onBack: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  toolbar: {
+    height: 56,
+    backgroundColor: '#FF6600'
   },
   up: {
     flex: 1,
@@ -84,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyScene;
+export default DemoTimer;

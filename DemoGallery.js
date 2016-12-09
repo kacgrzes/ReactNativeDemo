@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
-import { View, Text, Navigator } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class MyScene extends Component {
-  static get defaultProps() {
-    return {
-      title: 'MyScene'
-    };
-  }
-
   render() {
     let pic = {
       uri: 'http://andrewbtran.github.io/JRN-418/class6/cat.jpg'
     };
     return (
-      <View>
-        <View>
-          <Text>Hi! My name is {this.props.title}.</Text>
-        </View>
+      <View style={styles.container}>
+        <Icon.ToolbarAndroid
+          title="Gallery"
+          titleColor="white"
+          navIconName="arrow-back"
+          onIconClicked={this.props.navigator.pop}
+          actions={[
+            { title: 'Settings', iconName: 'settings', show: 'always' },
+          ]}
+          style={styles.toolbar}
+        />
         <View style={styles.down}>
           <Image source={pic} style={styles.image}/>
           <Image source={pic} style={styles.image}/>
@@ -39,9 +41,11 @@ export default class MyScene extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  toolbar: {
+    height: 56,
+    backgroundColor: '#FF6600'
   },
   up: {
     flex: 1,
@@ -69,8 +73,9 @@ const styles = StyleSheet.create({
   down: {
     flex: 2,
     backgroundColor: 'lightblue',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center',
   }
 });
