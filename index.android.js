@@ -23,7 +23,7 @@ BackAndroid.addEventListener('hardwareBackPress', () => {
   return true;
 });
 
-export default class DemoReactNative extends Component {
+export default class HnReader extends Component {
   getScene(route, navigator) {
     _navigator = navigator;
     switch (route.id) {
@@ -55,49 +55,11 @@ export default class DemoReactNative extends Component {
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F6F6EF',
   },
-  toolbar: {
-    height: 56,
-    backgroundColor: '#FF6600'
-  },
-  navigatorBar: {
-    alignItems: 'center',
-    backgroundColor: 'gray',
-  },
-  up: {
-    flex: 1,
-    backgroundColor: 'powderblue'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  image: {
-    width: 64,
-    height: 50
-  },
-  slider: {
-    height: 30,
-    margin: 10,
-    width: 200
-  },
-  down: {
-    flex: 2,
-    backgroundColor: 'lightblue',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  }
 });
 
-AppRegistry.registerComponent('DemoReactNative', () => DemoReactNative);
+AppRegistry.registerComponent('HnReader', () => HnReader);

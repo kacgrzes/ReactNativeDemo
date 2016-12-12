@@ -3,12 +3,8 @@ import {
   View,
   StyleSheet,
   WebView,
-  Text
+  ActivityIndicator
 } from 'react-native';
-
-import Spinner from 'react-native-spinkit';
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class ArticleView extends Component {
   constructor() {
@@ -25,6 +21,12 @@ class ArticleView extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <ActivityIndicator
+          animating={this.state.loading}
+          style={styles.loading}
+          color={'#FF6600'}
+          size={'large'}
+        />
         <WebView
           source={{uri: this.props.url}}
           onLoadEnd={() => this.onLoadEnd()}
@@ -47,14 +49,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF'
   },
-  spinner: {
+  loading: {
     position: 'absolute',
     backgroundColor: 'transparent',
     zIndex: 2,
     top: 10,
-    right: 10,
-    width: 50,
-    height: 50
+    right: 0,
+    left: 0,
   }
 });
 

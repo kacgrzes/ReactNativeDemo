@@ -4,6 +4,8 @@ import {
   ListView,
   Text,
   StyleSheet,
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native';
 
 import ArticleItem from './ArticleItem';
@@ -29,14 +31,6 @@ class ArticlesList extends Component {
     this.getNews();
   }
 
-  viewItem(url) {
-    console.log(url);
-    this.props.navigator.push({
-      id: 'article',
-      url: url,
-    })
-  }
-
   updateNewsItemsUI(newsItems) {
     const ds = this.state.dataSource.cloneWithRows(newsItems);
 
@@ -47,22 +41,37 @@ class ArticlesList extends Component {
   }
 
   getNews() {
+    this.setState({
+      loaded: false,
+      dataSource: this.state.dataSource.cloneWithRows([]),
+    });
     const TOP_STORIES_API = 'https://hacker-news.firebaseio.com/v0/topstories.json';
     let newsItems = [];
 
     fetch(TOP_STORIES_API)
       .then(response => response.json())
       .then(topStories => {
-        for(let i = 0; i < 100; ++i) {
+        this.setState(({
+          loaded: true,
+        }));
+        for(let i = 0; i < 10; ++i) {
           const storyUrl = `https://hacker-news.firebaseio.com/v0/item/${topStories[i]}.json`;
           fetch(storyUrl)
             .then(response => response.json())
             .then(story => {
+              console.log(story);
               newsItems = [...newsItems, story];
               this.updateNewsItemsUI(newsItems);
             });
         }
       });
+  }
+
+  viewItem(url) {
+    this.props.navigator.push({
+      id: 'article',
+      url: url,
+    });
   }
 
   render() {
@@ -74,13 +83,25 @@ class ArticlesList extends Component {
           style={styles.toolbar}
         />
         <View style={styles.body}>
+          <ActivityIndicator
+            animating={!this.state.loaded}
+            style={styles.loading}
+            color={'#FF6600'}
+            size={'large'}
+          />
           {
             this.state.loaded &&
 
             <ListView
               initialListSize={1}
               dataSource={this.state.dataSource}
-              renderRow={(news) => <Text style={styles.item} onPress={() => this.viewItem(news.url)}>{news.title}</Text>}
+              refreshControl={
+                <RefreshControl
+                  refreshing={!this.state.loaded}
+                  onRefresh={() => this.getNews()}
+                />
+              }
+              renderRow={(news) => <ArticleItem news={news} onArticlePress={url => this.viewItem(url)}/>}
             />
           }
         </View>
@@ -102,17 +123,18 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#f4f4f4'
   },
   body: {
     flex: 1,
-    padding: 12,
   },
-  item: {
-    fontSize: 16,
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
-    padding: 10,
+  loading: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    zIndex: 2,
+    top: 10,
+    right: 0,
+    left: 0,
   }
 });
 

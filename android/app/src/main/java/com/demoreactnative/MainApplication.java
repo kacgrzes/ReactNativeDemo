@@ -1,4 +1,4 @@
-package com.demoreactnative;
+package com.hnreader;
 
 import android.app.Application;
 import android.util.Log;
