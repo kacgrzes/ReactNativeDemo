@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import {
   View,
-  StyleSheet,
   WebView,
   ActivityIndicator
 } from 'react-native';
+
+import styles from '../components/styles';
 
 class ArticleView extends Component {
   constructor() {
@@ -24,7 +25,7 @@ class ArticleView extends Component {
         <ActivityIndicator
           animating={this.state.loading}
           style={styles.loading}
-          color={'#FF6600'}
+          color={'#2c93e1'}
           size={'large'}
         />
         <WebView
@@ -39,24 +40,5 @@ class ArticleView extends Component {
 ArticleView.propTypes = {
   url: PropTypes.string,
 };
-
-const styles = StyleSheet.create({
-  toolbar: {
-    height: 56,
-    backgroundColor: '#FF6600'
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF'
-  },
-  loading: {
-    position: 'absolute',
-    backgroundColor: 'transparent',
-    zIndex: 2,
-    top: 10,
-    right: 0,
-    left: 0,
-  }
-});
 
 export default ArticleView;
